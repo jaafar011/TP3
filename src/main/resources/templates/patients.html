@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+<h1>Patient Liste</h1>
+<div>
+<div class="card m-2">
+    <div class="card-body">
+        <form method="get" th:action="@{/api/index2}">
+            <label>keyword:</label>
+            <input type="text" name="search" th:value="${searchpages}">
+            <button type="submit" class="btn">Chercher</button>
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Score</th>
+                <th>date naissance</th>
+                <th>malade</th>
+            </tr>
+            <tr th:each="p:${patientList}">
+                <td th:text="${p.getId()}" >
+                <td th:text="${p.getNom()}" >
+                <td th:text="${p.getScore()}" >
+                <td th:text="${p.getDateNaissance()}" >
+                <td th:text="${p.isMalade()}" >
+                <td> <a class="btn btn-danger"
+                        onclick="return confirm('Confirmez la suppression?')"
+                        th:href="@{delete(id=${p.id},search=${searchpages},page=${currentpage})}"> Supprimer</a></td>
+                <td> <a class="btn btn-success"
+                        th:href="@{update(id=${p.id})}"
+                >Update </a>
+
+                </td>   
+
+            </tr>
+            </thead>
+        </table>
+
+    </div>
+
+</div>
+    <ul class="nav nav-pills btn">
+    <li th:each="page,status:${pages}">
+        <a th:href="@{/api/index2(page=${status.index},search=${searchpages})}"
+           th:class="${currentpage==status.index?'btn btn-dark ms-1':'btn ms-1'}"
+           th:text="${status.index}"></a>
+    </li>
+</ul>
+</div>
+
+</body>
+</html>
